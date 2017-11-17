@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CryptoCurrency</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings MainActivity -->
+    <string name="wait_please">Wait a moment please</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="button_login">Login</string>
+</resources>
