@@ -12,19 +12,25 @@ import com.ccf.cryptocurrency.fragments.WalletFragment;
 
 public class UserActivity extends AppCompatActivity {
 
+    private Fragment walletFragment;
+    private Fragment testFragment;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener  = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, new WalletFragment()).commit();
+                    if (walletFragment == null) walletFragment = new WalletFragment();
+                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, walletFragment).commit();
                     return true;
                 case R.id.navigation_dashboard:
-                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, new TestFragment()).commit();
+                    if (testFragment == null) testFragment = new TestFragment();
+                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, testFragment).commit();
                     return true;
                 case R.id.navigation_notifications:
-                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, new TestFragment()).commit();
+                    if (testFragment == null) testFragment = new TestFragment();
+                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, testFragment).commit();
                     return true;
             }
             return false;
@@ -40,8 +46,11 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        this.walletFragment =  new WalletFragment();
+
         if (savedInstanceState == null){
-            getFragmentManager().beginTransaction().add(R.id.rootLayout, new WalletFragment()).commit();
+            getFragmentManager().beginTransaction().add(R.id.rootLayout, walletFragment).commit();
         }
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

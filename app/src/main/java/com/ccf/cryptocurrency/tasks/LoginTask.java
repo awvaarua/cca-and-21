@@ -1,10 +1,19 @@
 package com.ccf.cryptocurrency.tasks;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.content.Intent;
 
+import com.ccf.cryptocurrency.Infrastructure.ApiRestClient;
+import com.loopj.android.http.*;
+
 import com.ccf.cryptocurrency.UserActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class LoginTask extends AsyncTask<String, Void, String> {
 
@@ -20,15 +29,9 @@ public class LoginTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        for (int i = 0; i < 5; i++) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                Thread.interrupted();
-            }
-        }
-        System.out.println(email);
-        System.out.println(password);
+        SharedPreferences sharedPref = context.getSharedPreferences("com.ccf.cryptocurrency", Context.MODE_PRIVATE);
+        sharedPref.edit().putString("user_session", "");
+        login();
         return "Executed";
     }
 
@@ -40,10 +43,22 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected void onPreExecute() {
-
-    }
-
-    @Override
     protected void onProgressUpdate(Void... values) {}
+
+    private void login() {
+        RequestParams params = new RequestParams();
+        params.put("email", email);
+        params.put("password", password);
+        ApiRestClient.post("customers/login", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                System.out.println(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                System.out.println(errorResponse);
+            }
+        });
+    }
 }

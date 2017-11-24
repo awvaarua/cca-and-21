@@ -35,11 +35,6 @@ public class MyWalletRecyclerViewAdapter extends RecyclerView.Adapter<MyWalletRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        /*
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-*/
         holder.mItem = mValues.get(position);
         holder.mIdView.setText("BTC Wallet");
         holder.mContentView.setText("0.01185799 BTC");
