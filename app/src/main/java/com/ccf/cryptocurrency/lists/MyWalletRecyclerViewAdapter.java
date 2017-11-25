@@ -7,22 +7,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ccf.cryptocurrency.R;
+import com.ccf.cryptocurrency.entities.CurrencyType;
+import com.ccf.cryptocurrency.entities.Wallet;
 import com.ccf.cryptocurrency.fragments.WalletFragment.OnListFragmentInteractionListener;
 import com.ccf.cryptocurrency.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyWalletRecyclerViewAdapter extends RecyclerView.Adapter<MyWalletRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Wallet> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyWalletRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyWalletRecyclerViewAdapter(List<Wallet> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,8 +33,8 @@ public class MyWalletRecyclerViewAdapter extends RecyclerView.Adapter<MyWalletRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText("BTC Wallet");
-        holder.mContentView.setText("0.01185799 BTC");
+        holder.mIdView.setText(holder.mItem.getCurrencyType().getName());
+        holder.mContentView.setText(holder.mItem.getAmountWithCurrency());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +57,7 @@ public class MyWalletRecyclerViewAdapter extends RecyclerView.Adapter<MyWalletRe
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Wallet mItem;
 
         public ViewHolder(View view) {
             super(view);

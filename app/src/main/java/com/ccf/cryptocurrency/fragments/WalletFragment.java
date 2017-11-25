@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import com.ccf.cryptocurrency.Infrastructure.ApiRestClient;
 import com.ccf.cryptocurrency.LoadDataActivity;
 import com.ccf.cryptocurrency.UserActivity;
+import com.ccf.cryptocurrency.entities.CurrencyType;
+import com.ccf.cryptocurrency.entities.Wallet;
 import com.ccf.cryptocurrency.lists.MyWalletRecyclerViewAdapter;
 import com.ccf.cryptocurrency.R;
 import com.ccf.cryptocurrency.dummy.DummyContent;
@@ -24,8 +26,12 @@ import com.ccf.cryptocurrency.dummy.DummyContent.DummyItem;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -34,6 +40,8 @@ public class WalletFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private View view;
     private Context context;
+    private List<Wallet> wallets;
+    private List<CurrencyType> currencies;
 
     public WalletFragment() {
     }
@@ -50,6 +58,7 @@ public class WalletFragment extends Fragment {
         if (view instanceof RecyclerView) {
             context = view.getContext();
             getWallets();
+
             /*
             FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.watch_video_fab);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -71,29 +80,79 @@ public class WalletFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Wallet item);
     }
 
     private void getWallets() {
+        if (currencies == null) {
+            getCurrenciesRequest();
+        } else if (currencies != null && wallets == null) {
+            getWalletsRequest();
+        } else {
+            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(new MyWalletRecyclerViewAdapter(wallets, mListener));
+        }
+    }
 
+    private void getCurrenciesRequest() {
+        currencies = new ArrayList<CurrencyType>();
+        SharedPreferences sharedPref = this.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        String session = sharedPref.getString("user_session", "");
+        ApiRestClient.addHeader("Authorization", session);
+        ApiRestClient.get("/currencytypes", null, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject item = response.getJSONObject(i);
+                        CurrencyType c = new CurrencyType(item.getInt("id"), item.getString("name"), item.getString("shortName"), item.getString("icon"));
+                        currencies.add(c);
+                    } catch (JSONException e) {
+
+                    }
+                }
+                getWalletsRequest();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                System.out.println(errorResponse);
+            }
+        });
+    }
+
+    private CurrencyType searchCurrency(int id) {
+        for (CurrencyType c : currencies) {
+            if (c.getId() == id) return c;
+        }
+        return null;
+    }
+
+    private void getWalletsRequest() {
+        wallets = new ArrayList<Wallet>();
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
         String session = sharedPref.getString("user_session", "");
         int userId = sharedPref.getInt("user_id", 0);
 
         ApiRestClient.addHeader("Authorization", session);
-        ApiRestClient.get("/customers/"+userId+"/wallets", null, new JsonHttpResponseHandler() {
+        ApiRestClient.get("/customers/" + userId + "/wallets", null, new JsonHttpResponseHandler() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    String sessionId = response.getString("id");
-                    RecyclerView recyclerView = (RecyclerView) view;
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                    recyclerView.setAdapter(new MyWalletRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject item = response.getJSONObject(i);
+                        Wallet w = new Wallet(item.getDouble("amount"), searchCurrency(item.getInt("currencyTypeId")));
+                        wallets.add(w);
+                    } catch (JSONException e) {
 
-                } catch (JSONException e) {
-                    System.out.println(e);
+                    }
                 }
+                RecyclerView recyclerView = (RecyclerView) view;
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                recyclerView.setAdapter(new MyWalletRecyclerViewAdapter(wallets, mListener));
             }
 
             @Override
