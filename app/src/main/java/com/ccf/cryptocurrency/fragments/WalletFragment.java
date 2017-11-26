@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.ccf.cryptocurrency.Infrastructure.ApiRestClient;
 import com.ccf.cryptocurrency.LoadDataActivity;
@@ -38,6 +40,7 @@ import cz.msebera.android.httpclient.Header;
 public class WalletFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private View view;
     private Context context;
     private List<Wallet> wallets;
@@ -55,20 +58,17 @@ public class WalletFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_wallet_list, container, false);
-        if (view instanceof RecyclerView) {
+        if (view instanceof SwipeRefreshLayout) {
+            mSwipeRefreshLayout = (SwipeRefreshLayout) view;
+            mSwipeRefreshLayout.setRefreshing(true);
             context = view.getContext();
-            getWallets();
-
-            /*
-            FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.watch_video_fab);
-            fab.setOnClickListener(new View.OnClickListener() {
+            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                public void onRefresh() {
+                    getWalletsRequest();
                 }
             });
-            */
+            getWallets();
         }
         return view;
     }
@@ -86,12 +86,8 @@ public class WalletFragment extends Fragment {
     private void getWallets() {
         if (currencies == null) {
             getCurrenciesRequest();
-        } else if (currencies != null && wallets == null) {
-            getWalletsRequest();
         } else {
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyWalletRecyclerViewAdapter(wallets, mListener));
+            getWalletsRequest();
         }
     }
 
@@ -118,7 +114,8 @@ public class WalletFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                System.out.println(errorResponse);
+                mSwipeRefreshLayout.setRefreshing(false);
+                Snackbar.make(view.findViewById(R.id.list_wallets), R.string.error_connection, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }
@@ -150,14 +147,16 @@ public class WalletFragment extends Fragment {
 
                     }
                 }
-                RecyclerView recyclerView = (RecyclerView) view;
+                RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list_wallets);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 recyclerView.setAdapter(new MyWalletRecyclerViewAdapter(wallets, mListener));
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                System.out.println(errorResponse);
+                mSwipeRefreshLayout.setRefreshing(false);
+                Snackbar.make(view.findViewById(R.id.list_wallets), R.string.error_connection, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }
