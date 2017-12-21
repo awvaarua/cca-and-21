@@ -25,6 +25,7 @@ import com.ccf.cryptocurrency.lists.MyWalletRecyclerViewAdapter;
 import com.ccf.cryptocurrency.R;
 import com.ccf.cryptocurrency.dummy.DummyContent;
 import com.ccf.cryptocurrency.dummy.DummyContent.DummyItem;
+import com.ccf.cryptocurrency.lists.WalletRecyclerViewListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -69,6 +70,7 @@ public class WalletFragment extends Fragment {
                 }
             });
             getWallets();
+            mListener = new WalletRecyclerViewListener(context, getActivity(), currencies);
         }
         return view;
     }
@@ -141,7 +143,7 @@ public class WalletFragment extends Fragment {
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject item = response.getJSONObject(i);
-                        Wallet w = new Wallet(item.getDouble("amount"), searchCurrency(item.getInt("currencyTypeId")));
+                        Wallet w = new Wallet(item.getInt("id"), item.getDouble("amount"), searchCurrency(item.getInt("currencyTypeId")));
                         wallets.add(w);
                     } catch (JSONException e) {
 

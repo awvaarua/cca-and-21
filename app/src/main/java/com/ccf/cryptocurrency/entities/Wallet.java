@@ -6,10 +6,11 @@ package com.ccf.cryptocurrency.entities;
 
 public class Wallet {
 
+    private int id;
     private double amount;
     private CurrencyType currencyType;
 
-    public Wallet(double amount, CurrencyType currencyType) {
+    public Wallet(int id, double amount, CurrencyType currencyType) {
         this.amount = amount;
         this.currencyType = currencyType;
     }

@@ -22,15 +22,15 @@ public class UserActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     if (walletFragment == null) walletFragment = new WalletFragment();
-                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, walletFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, walletFragment).addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_dashboard:
                     if (testFragment == null) testFragment = new TestFragment();
-                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, testFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, testFragment).addToBackStack(null).commit();
                     return true;
                 case R.id.navigation_notifications:
                     if (testFragment == null) testFragment = new TestFragment();
-                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, testFragment).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.rootLayout, testFragment).addToBackStack(null).commit();
                     return true;
             }
             return false;

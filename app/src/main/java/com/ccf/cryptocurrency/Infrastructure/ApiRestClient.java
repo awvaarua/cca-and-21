@@ -2,8 +2,10 @@ package com.ccf.cryptocurrency.Infrastructure;
 
 import com.loopj.android.http.*;
 
+import javax.net.ssl.HostnameVerifier;
+
 public class ApiRestClient {
-    private static final String BASE_URL = "https://1e2d45c3.ngrok.io/api";
+    private static final String BASE_URL = "https://14a66a08.ngrok.io/api";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

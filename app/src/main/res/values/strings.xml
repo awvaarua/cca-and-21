@@ -11,9 +11,11 @@
     <string name="prompt_password">Password</string>
     <string name="button_login">Login</string>
     <string name="title_activity_user">UserActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">Wallet</string>
+    <string name="title_dashboard">Win</string>
+    <string name="title_notifications">Learn</string>
+
+    <string name="create_account">Create Account</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
