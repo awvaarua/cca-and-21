@@ -21,4 +21,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="error_connection">Ups! We have connection problems.</string>
+
+    <string name="withdrawl_button">Withdrawl</string>
+    <string name="withdrawls_text">Withdrawls</string>
+    <string name="withdrawl_info">Click for info...</string>
+
+    <string name="withdrawl_date_tx">Date</string>
+    <string name="withdrawl_amoun_tx">Amount</string>
+
 </resources>

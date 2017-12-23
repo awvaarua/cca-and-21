@@ -38,7 +38,8 @@
         <activity
             android:name="com.adcolony.sdk.AdColonyAdViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity android:name=".CreateAccountActivity"></activity>
+        <activity android:name=".CreateAccountActivity" />
+        <activity android:name=".WebViewActivity"></activity>
     </application>
 
 </manifest>

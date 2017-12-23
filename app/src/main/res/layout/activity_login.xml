@@ -59,7 +59,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:text="¿No tienes cuenta? Creae una"
+            android:text="¿No tienes cuenta? Crea una"
             android:clickable="true"/>
 
     </LinearLayout>
