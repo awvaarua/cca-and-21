@@ -92,7 +92,7 @@ public class TestFragment extends Fragment {
         /**
          * Set up listener for interstitial ad callbacks. You only need to implement the callbacks
          * that you care about. The only required callback is onRequestFilled, as this is the only
-         * way to get an ad object.
+         * way to getAsync an ad object.
          */
         listener = new AdColonyInterstitialListener() {
             /** Ad passed back in request filled callback, ad can now be shown */

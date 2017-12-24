@@ -35,7 +35,7 @@ public class CreateAccountLoadActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("email", email);
         params.put("password", password);
-        ApiRestClient.post("/customers", params, new JsonHttpResponseHandler() {
+        ApiRestClient.postAsync("/customers", params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -60,7 +60,7 @@ public class CreateAccountLoadActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("email", email);
         params.put("password", password);
-        ApiRestClient.post("/customers/login", params, new JsonHttpResponseHandler() {
+        ApiRestClient.postAsync("/customers/login", params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -72,6 +72,7 @@ public class CreateAccountLoadActivity extends AppCompatActivity {
                     editor.putString("user_session", sessionId);
                     editor.putInt("user_id", userId);
                     editor.commit();
+                    ApiRestClient.setSession(sessionId);
 
                     // Start the new activity
                     Intent i = new Intent(CreateAccountLoadActivity.this, UserActivity.class);

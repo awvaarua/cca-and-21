@@ -57,11 +57,9 @@ public class WithdrawlListAdapter extends BaseAdapter {
         TextView amount = (TextView) view.findViewById(R.id.amount_withdrawl);
 
         Withdrawl item = this.items.get(i);
-        //date.setText(item.getDate() + "");
-        //amount.setText(item.getAmount() +  "");
 
-        date.setText("23/12/1994");
-        amount.setText("2132132131 DOGE");
+        date.setText(item.getDateWithFormat("dd/MM/yyyy"));
+        amount.setText(item.getAmount() + " DOGE");
 
         return view;
     }

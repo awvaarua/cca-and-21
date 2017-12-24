@@ -10,10 +10,11 @@ import com.loopj.android.http.*;
 
 import com.ccf.cryptocurrency.UserActivity;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
+
+// Pdte. Eliminar
 
 public class LoginTask extends AsyncTask<String, Void, String> {
 
@@ -42,14 +43,11 @@ public class LoginTask extends AsyncTask<String, Void, String> {
         context.startActivity(i);
     }
 
-    @Override
-    protected void onProgressUpdate(Void... values) {}
-
     private void login() {
         RequestParams params = new RequestParams();
         params.put("email", email);
         params.put("password", password);
-        ApiRestClient.post("customers/login", params, new JsonHttpResponseHandler() {
+        ApiRestClient.postAsync("customers/login", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 System.out.println(response);

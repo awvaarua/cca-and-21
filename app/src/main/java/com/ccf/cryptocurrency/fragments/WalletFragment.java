@@ -1,33 +1,24 @@
 package com.ccf.cryptocurrency.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.ccf.cryptocurrency.Infrastructure.ApiRestClient;
-import com.ccf.cryptocurrency.LoadDataActivity;
-import com.ccf.cryptocurrency.UserActivity;
 import com.ccf.cryptocurrency.entities.CurrencyType;
 import com.ccf.cryptocurrency.entities.Wallet;
 import com.ccf.cryptocurrency.lists.MyWalletRecyclerViewAdapter;
 import com.ccf.cryptocurrency.R;
-import com.ccf.cryptocurrency.dummy.DummyContent;
-import com.ccf.cryptocurrency.dummy.DummyContent.DummyItem;
 import com.ccf.cryptocurrency.lists.WalletRecyclerViewListener;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -97,8 +88,8 @@ public class WalletFragment extends Fragment {
         currencies = new ArrayList<CurrencyType>();
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
         String session = sharedPref.getString("user_session", "");
-        ApiRestClient.addHeader("Authorization", session);
-        ApiRestClient.get("/currencytypes", null, new JsonHttpResponseHandler() {
+        ApiRestClient.addHeaderAsync("Authorization", session);
+        ApiRestClient.getAsync("/currencytypes", null, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -135,8 +126,8 @@ public class WalletFragment extends Fragment {
         String session = sharedPref.getString("user_session", "");
         int userId = sharedPref.getInt("user_id", 0);
 
-        ApiRestClient.addHeader("Authorization", session);
-        ApiRestClient.get("/customers/" + userId + "/wallets", null, new JsonHttpResponseHandler() {
+        ApiRestClient.addHeaderAsync("Authorization", session);
+        ApiRestClient.getAsync("/customers/" + userId + "/wallets", null, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

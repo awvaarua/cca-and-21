@@ -26,7 +26,7 @@ public class WalletRecyclerViewListener implements WalletFragment.OnListFragment
     @Override
     public void onListFragmentInteraction(Wallet item) {
         WalletDetailFragment detailFragment = new WalletDetailFragment();
-        detailFragment.init(context, item, currencies);
+        detailFragment.init(context, activity, item, currencies);
         activity.getFragmentManager().beginTransaction().replace(R.id.rootLayout, detailFragment).addToBackStack(null).commit();
     }
 }

@@ -13,7 +13,6 @@ public class Wallet {
         this.amount = amount;
         this.currencyType = currencyType;
         this.withdrawls = new ArrayList<Withdrawl>();
-        this.withdrawls.add(new Withdrawl(121));
     }
 
     public double getAmount() {
@@ -30,5 +29,9 @@ public class Wallet {
 
     public CurrencyType getCurrencyType() {
         return currencyType;
+    }
+
+    public int getId() {
+        return this.id;
     }
 }

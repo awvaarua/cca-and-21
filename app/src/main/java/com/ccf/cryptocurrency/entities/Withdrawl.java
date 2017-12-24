@@ -1,5 +1,6 @@
 package com.ccf.cryptocurrency.entities;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Withdrawl {
@@ -10,7 +11,9 @@ public class Withdrawl {
     private String toAddress;
     private Date date;
 
-    public Withdrawl(double amount) {
+    public Withdrawl(String txId, Date date, double amount) {
+        this.txId = txId;
+        this.date = date;
         this.amount = amount;
     }
 
@@ -18,8 +21,16 @@ public class Withdrawl {
         return this.date;
     }
 
+    public String getDateWithFormat(String format) {
+        return new SimpleDateFormat(format).format(this.date);
+    }
+
+    public String getTxId() {
+        return this.txId;
+    }
+
     public double getAmount() {
-        return this.getAmount();
+        return this.amount;
     }
 
 }

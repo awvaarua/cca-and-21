@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.content.Intent;
 
 import com.ccf.cryptocurrency.Infrastructure.ApiRestClient;
-import com.ccf.cryptocurrency.tasks.LoginTask;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -38,7 +37,7 @@ public class LoadDataActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("email", email);
         params.put("password", password);
-        ApiRestClient.post("/customers/login", params, new JsonHttpResponseHandler() {
+        ApiRestClient.postAsync("/customers/login", params, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -50,6 +49,7 @@ public class LoadDataActivity extends AppCompatActivity {
                     editor.putString("user_session", sessionId);
                     editor.putInt("user_id", userId);
                     editor.commit();
+                    ApiRestClient.setSession(sessionId);
 
                     // Start the new activity
                     Intent i = new Intent(LoadDataActivity.this, UserActivity.class);
